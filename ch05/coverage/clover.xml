@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1721987921218" clover="3.2.0">
-  <project timestamp="1721987921218" name="All files">
-    <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5" elements="15" coveredelements="15" complexity="0" loc="10" ncloc="10" packages="1" files="2" classes="2"/>
-    <file name="fortune.js" path="D:\Minh\Projects\web-development-with-node-express\ch05\lib\fortune.js">
-      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="9" count="1" type="stmt"/>
-      <line num="10" count="1" type="stmt"/>
-      <line num="11" count="1" type="stmt"/>
-    </file>
-    <file name="handlers.js" path="D:\Minh\Projects\web-development-with-node-express\ch05\lib\handlers.js">
-      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="4" count="1" type="stmt"/>
-      <line num="5" count="1" type="stmt"/>
-      <line num="6" count="1" type="stmt"/>
-      <line num="7" count="1" type="stmt"/>
-    </file>
+<coverage generated="1722012980434" clover="3.2.0">
+  <project timestamp="1722012980434" name="All files">
+    <metrics statements="26" coveredstatements="25" conditionals="4" coveredconditionals="3" methods="6" coveredmethods="5" elements="36" coveredelements="33" complexity="0" loc="26" ncloc="26" packages="2" files="3" classes="3"/>
+    <package name="ch05">
+      <metrics statements="16" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="0"/>
+      <file name="meadowlark.js" path="D:\Minh\Projects\web-development-with-node-express\ch05\meadowlark.js">
+        <metrics statements="16" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="23" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="ch05.lib">
+      <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
+      <file name="fortune.js" path="D:\Minh\Projects\web-development-with-node-express\ch05\lib\fortune.js">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+      </file>
+      <file name="handlers.js" path="D:\Minh\Projects\web-development-with-node-express\ch05\lib\handlers.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
