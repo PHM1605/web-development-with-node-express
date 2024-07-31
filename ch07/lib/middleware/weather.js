@@ -1,4 +1,4 @@
-const getWeatherData = () => [
+const getWeatherData = () => Promise.resolve([
   {
     location: {
       name: 'Portland',
@@ -17,7 +17,7 @@ const getWeatherData = () => [
     weather: 'Showers And Thunderstorms',
     temp: '55 F',
   }
-]
+]);
 
 const weatherMiddleware = async (req, res, next) => {
   if (!res.locals.partials) res.locals.partials = {}

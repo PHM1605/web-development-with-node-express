@@ -1,6 +1,7 @@
 const express = require("express");
 const { engine } = require("express-handlebars");
 const handlers = require("./lib/handlers");
+const weatherMiddleware = require("./lib/middleware/weather")
 
 const app = express();
 app.engine("handlebars", engine({
@@ -15,6 +16,7 @@ app.engine("handlebars", engine({
 }))
 app.set('view engine', 'handlebars');
 const port = process.env.PORT || 3000;
+app.use(weatherMiddleware);
 
 app.get("/", handlers.home);
 app.get("/section-test", handlers.sectionTest);
