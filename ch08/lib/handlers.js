@@ -31,6 +31,35 @@ exports.vacationPhotoContest = (req, res) => {
   res.render('contest/vacation-photo', {year: now.getFullYear(), month: now.getMonth() });
 }
 
+exports.vacationPhotoContestProcess = (req, res, fields, files) => {
+  console.log('field data: ', fields);
+  console.log("files: ", files);
+  res.redirect(303, '/contest/vacation-photo-thank-you');
+}
+
+exports.vacationPhotoContestProcessThankYou = (req, res) => {
+  res.render("contest/vacation-photo-thank-you");
+}
+
+exports.vacationPhotoContestError = (req, res, message) => {
+  res.send({result: "error", error: message});
+}
+
+exports.vacationPhotoContestAjax = (req, res) => {
+  const now = new Date();
+  res.render("contest/vacation-photo-ajax", { year: now.getFullYear(), month: now.getMonth() });
+}
+
+exports.api.vacationPhotoContest = (req, res, fields, files) => {
+  console.log('field data: ', fields);
+  console.log('files: ', files);
+  res.send({result: 'success'});
+}
+
+exports.api.vacationPhotoContestError = (req, res, message) => {
+  res.send({result: "error", error: message});
+}
+
 exports.notFound = (req, res) => res.render("404");
 
 exports.serverError = (err, req, res, next) => res.render("500");
