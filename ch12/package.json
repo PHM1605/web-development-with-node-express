@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "cluster": "^0.7.7",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "loadtest": "^8.0.9",
+    "morgan": "^1.10.0"
+  },
+  "scripts": {
+    "stress": "artillery quick --count 10 -n 20 http://localhost:3000"
+  }
+}
