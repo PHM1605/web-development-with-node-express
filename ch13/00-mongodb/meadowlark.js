@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 
 const handlers = require("./lib/handlers.js");
+const weatherMiddleware = require("./lib/middleware/weather");
 
 const app = express();
 
@@ -28,7 +29,13 @@ app.use(bodyParser.json())
 
 const port = process.env.PORT || 3000;
 
+app.use(express.static(__dirname + "/public"))
+
+app.use(weatherMiddleware)
+
 app.get("/", handlers.home)
+app.get("/newsletter", handlers.newsletter)
+app.post("/api/newsletter-signup", handlers.api.newsletterSignup)
 
 if (require.main === module) {
   app.listen(port, () => {
