@@ -57,6 +57,7 @@ app.post('/api/vacation-photo-contest/:year/:month', (req, res) => {
     handlers.api.vacationPhotoContest(req, res, fields, files);
   })
 })
+app.get('/set-currency/:currency', handlers.setCurrency)
 
 if (require.main === module) {
   app.listen(port, () => {

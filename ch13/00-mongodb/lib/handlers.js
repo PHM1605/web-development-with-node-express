@@ -83,6 +83,11 @@ exports.api.vacationPhotoContest = async (req, res, fields, files) => {
   res.send({result: 'success'})
 }
 
+exports.setCurrency = (req, res) => {
+  req.session.currency = req.params.currency;
+  return res.redirect(303, '/vacations');
+}
+
 function convertFromUSD(value, currency) {
   switch(currency) {
     case "USD": return value * 1;
