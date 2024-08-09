@@ -4,10 +4,16 @@ const bodyParser = require('body-parser');
 const multiparty = require('multiparty');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
+const {createClient} = require('redis');
+const RedisStore = require('connect-redis').default;
 
 const handlers = require("./lib/handlers.js");
 const weatherMiddleware = require("./lib/middleware/weather");
 const credentials = require('./credentials.js');
+const redisClient = createClient({
+  url: credentials.redis.url
+});
+redisClient.connect().catch(console.error);
 
 const app = express();
 
@@ -33,8 +39,10 @@ app.use(cookieParser(credentials.cookieSecret))
 app.use(expressSession({
   resave: false,
   saveUninitialized: false,
-  secret: credentials.cookieSecret
-  // MISSING REDIS
+  secret: credentials.cookieSecret,
+  store: new RedisStore({
+    client: redisClient
+  })
 }))
 
 const port = process.env.PORT || 3000;

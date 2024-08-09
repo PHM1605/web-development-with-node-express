@@ -1,4 +1,16 @@
 const db = require('../db');
+const {promisify} = require('util');
+const mv = require('mv');
+const fs = require('fs');
+const pathUtils = require('path');
+
+const mkdir = promisify(fs.mkdir);
+const move = promisify(mv);
+
+const dataDir = pathUtils.resolve(__dirname, '..', 'data');
+const vacationPhotosDir = pathUtils.join(dataDir, 'vacation-photos');
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
+if (!fs.existsSync(vacationPhotosDir)) fs.mkdirSync(vacationPhotosDir);
 
 exports.api = {};
 exports.home = (req, res) => res.render('home');
@@ -64,3 +76,19 @@ exports.vacationPhotoContestAjax = (req, res) => {
   const now = new Date();
   res.render('contest/vacation-photo-ajax', {year: now.getFullYear(), month: now.getMonth()});
 }
+
+exports.api.vacationPhotoContest = async (req, res, fields, files) => {
+  const photo = files.photo[0];
+  const dir = vacationPhotosDir + '/' + Date.now();
+  const path = dir + '/' + photo.originalFileName;
+  await mkdir(dir);
+  await fs.promises.cp(photo.path, path, {recursive: true});
+  await fs.promises.rm(photo.path, {recursive: true});
+  //saveContestEntry('vacation-photo', fields.email, req.params.year, req.params.month, path);
+  res.send({result: 'success'});
+}
+
+exports.notFound = (req, res) => res.render('404');
+exports.serverError = (err, req, res, next) => res.render('500');
+
+function saveContestEntry(contestName, email, year, month, photoPath) {}
