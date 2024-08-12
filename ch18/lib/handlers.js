@@ -1,3 +1,9 @@
+exports.home = (req, res) => res.render('home', {username: req.user && req.user.name})
+exports.newsletter = (req, res) => {
+  res.render("newsletter");
+}
+
+exports.api = {}
 exports.api.newsletterSignup = (req, res) => {
   // _csrf field is now mandatory, due to "csurf" setup
   console.log('CSRF token (from hidden form field): ' + req.body._csrf);

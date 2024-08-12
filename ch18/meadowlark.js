@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 const credentials = require("./credentials");
 const csrf = require("csurf");
+const cors = require('cors')
 const handlers = require("./lib/handlers");
 
 const {createClient} = require("redis");
@@ -50,6 +51,10 @@ app.use((req, res, next) => {
   next();
 })
 
+app.use(express.static(__dirname + '/public'))
+
+app.get('/', handlers.home)
+app.get("/newsletter", handlers.newsletter);
 app.post("/api/newsletter-signup", handlers.api.newsletterSignup);
 
 if (require.main === module) {
