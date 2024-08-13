@@ -7,6 +7,7 @@ const credentials = require("./credentials");
 const csrf = require("csurf");
 const cors = require('cors')
 const handlers = require("./lib/handlers");
+const createAuth = require('./lib/auth');
 
 const {createClient} = require("redis");
 const passport = require("passport");
@@ -53,6 +54,19 @@ app.use((req, res, next) => {
 })
 
 app.use(express.static(__dirname + '/public'))
+
+// Auth config
+const auth = createAuth(app, {
+  baseUrl: process.env.BASE_URL,
+  providers: credentials.authProviders, // facebook or google
+  successRedirect: '/account',
+  failureRedirect: '/unauthorized'
+})
+
+// linking to Passport middleware
+auth.init();
+// set routes
+auth.registerRoutes();
 
 app.get('/', handlers.home)
 app.get("/newsletter", handlers.newsletter);
