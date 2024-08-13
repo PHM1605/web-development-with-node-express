@@ -9,6 +9,7 @@ const cors = require('cors')
 const handlers = require("./lib/handlers");
 
 const {createClient} = require("redis");
+const passport = require("passport");
 const RedisStore = require("connect-redis").default;
 const redisClient = createClient({
   url: credentials.redis.url
@@ -56,6 +57,7 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', handlers.home)
 app.get("/newsletter", handlers.newsletter);
 app.post("/api/newsletter-signup", handlers.api.newsletterSignup);
+app.get("/auth/facebook", passport.authenticate('facebook'))
 
 if (require.main === module) {
   app.listen(port, () => {
