@@ -1,5 +1,6 @@
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 const db = require('../db');
 
 // put user ID into session
@@ -10,7 +11,7 @@ passport.deserializeUser((id, done) =>{
   .then(user => done(null, user))
   .catch(err => done(err, null))
 })
-// ==> after this, when user successfully authenticated, there will be "req.session.passport.user" object from db
+// ==> after this, when user successfully authenticated, there will be "req.user" object from db
 
 // "createAuth" function
 module.exports = (app, options) => {
@@ -33,7 +34,7 @@ module.exports = (app, options) => {
         .then(user => {
           // if user is already in db => call serializeUser to put userId into session
           if (user) return done(null, user);
-          // if user is not yet in db => put it in db => call serializeUser to put userId into session
+          // if user is not yet in db => put it in db => call serializeUser to put user into session
           db.addUser({
             authId: authId,
             name: profile.displayName,
@@ -46,10 +47,36 @@ module.exports = (app, options) => {
         .catch(err => {
           if(err) return done(err, null);
         })
-      }
-    ))
-    app.use(passport.initialized());
-    app.use(passport.session());
+      }))
+
+      passport.use(new GoogleStrategy({
+        clientID: config.google.clientID,
+        clientSecret: config.google.clientSecret,
+        callbackURL: (options.baseUrl || "") + '/auth/google/callback'
+      }, (token, tokenSecret, profile, done) => {
+        const authId = 'google:' + profile.id;
+        
+        db.getUserByAuthId(authId)
+        .then(user => {
+          if (user) return done(null, user);
+          console.log("V: ", profile.displayName)
+          db.addUser({
+            authId: authId, 
+            name: profile.displayName,
+            created: new Date(),
+            role: 'customer'
+          })
+          .then(user => done(null, user))
+          .catch(err => done(err, null))
+        })
+        .catch(err => {
+          console.log('whoops, there was an error: ', err.message);
+          if(err) return done(err, null);
+        })
+      }));
+
+      app.use(passport.initialize());
+      app.use(passport.session());
     },
     registerRoutes: () => {
       app.get('/auth/facebook', (req, res, next) => {
@@ -67,6 +94,19 @@ module.exports = (app, options) => {
           const redirect = req.session.authRedirect;
           if (redirect) delete req.session.authRedirect 
           res.redirect(303, redirect || options.successRedirect);
+        }
+      ),
+
+      app.get('/auth/google', (req, res, next) => {
+        if (req.query.redirect) req.session.authRedirect = req.query.redirect;
+        passport.authenticate('google', {scope: ['profile']}) (req, res, next)
+      })
+      app.get('/auth/google/callback', 
+        passport.authenticate('google', { failureRedirect: options.failureRedirect}),
+        (req, res) => {
+          const redirect = req.session.authRedirect;
+          if (redirect) delete req.session.redirect;
+          res.redirect(303, req.query.redirect || options.successRedirect)
         }
       )
     }

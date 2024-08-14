@@ -2,7 +2,7 @@ const credentials = require("./credentials");
 const mongoose = require('mongoose');
 const User = require("./models/user")
 
-const connectionString = credentials.mongo;
+const connectionString = credentials.mongo.connectionString;
 if (!connectionString) {
   console.error('MongoDB connection string missing!');
   process.exit(1);
