@@ -1,0 +1,19 @@
+<div id="map" style="width: 100%; height: 60vh;"></div>
+<script>
+  let map = undefined;
+  async function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 44.0978, lng: -120.0963},
+      zoom: 7
+    });
+    const vacations = await fetch('/api/vacations').then(res=>res.json());
+    vacations.forEach(({name, location}) => {
+      const marker = new google.maps.Marker({
+        position: location.coordinates,
+        map,
+        title: name
+      })
+    })
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{googleApiKey}}&callback=initMap" async defer></script>

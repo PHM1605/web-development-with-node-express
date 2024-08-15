@@ -2,12 +2,22 @@ const express = require('express');
 const {engine} = require("express-handlebars");
 const credentials = require("./credentials");
 const createTwitterClient = require("./lib/twitter");
+const handlers = require('./lib/handlers');
+const weatherMiddleware = require('./lib/middleware/weather');
 
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.static(__dirname + '/public'))
+app.use(weatherMiddleware);
 app.engine('handlebars', engine({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  helpers: {
+    section: function(name, options) {
+      if (!this._sections) this._sections = {};
+      this._sections[name] = options.fn(this);
+      return null;
+    }
+  }
 }))
 app.set('view engine', 'handlebars')
 
@@ -39,13 +49,18 @@ const getTopTweets = ((twitterClient, search) => {
   }
 })(twitterClient, '#Oregon #travel')
 
+app.get('/', handlers.home)
 app.get('/social', async (req, res) => {
   res.render('social', {tweets: await getTopTweets});
+})
+app.get("/api/vacations", handlers.getVacationsApi);
+app.get("/vacations-map", async (req, res) => {
+  res.render('vacations-map', {googleApiKey: credentials.google.apiKey})
 })
 
 if (require.main === module) {
   app.listen(port, () => {
-    console.log(`Express started on http://localhost:${port}/social; press Ctrl-C to terminate.`)
+    console.log(`Express started on http://localhost:${port} and http://localhost:${port}/social; press Ctrl-C to terminate.`)
   })
 } else {
   module.exports = app;
